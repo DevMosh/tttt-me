@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+jinja2
+aiosqlite
+cachetools
+pytest
+pytest-asyncio
+httpx

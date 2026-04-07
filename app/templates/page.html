@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ target.title }} — tttt.me</title>
+    <link rel="stylesheet" href="/static/style.css">
+    {# No-JS fallback: авторедирект через 10 секунд #}
+    <meta http-equiv="refresh" content="10;url={{ auto_url }}">
+</head>
+<body>
+    <main class="card">
+        <h1>{{ target.title }}</h1>
+        <p class="kind">{{ target.kind }}</p>
+
+        {% if target.tg_url %}
+            <a class="btn primary" href="{{ target.tg_url }}"
+               onclick="hit('tg')">Открыть в Telegram</a>
+        {% endif %}
+        <a class="btn secondary" href="{{ target.web_url }}"
+           onclick="hit('web')">Открыть в браузере</a>
+
+        <p class="countdown">
+            Автооткрытие через <span id="c">10</span> с
+            <a href="#" onclick="stop();return false">отменить</a>
+        </p>
+
+        <hr>
+        <aside class="ad">
+            <strong>@ProxyCatalog_bot</strong>
+            <p>Telegram не открывается? Рабочий прокси за 5 секунд.</p>
+            <a class="btn primary small"
+               href="https://t.me/ProxyCatalog_bot?start=ttttme"
+               onclick="hit('ad')">Включить прокси</a>
+        </aside>
+    </main>
+
+    <script>
+                // Отправляем счётчик клика на /hit. sendBeacon не блокирует навигацию.
+        function hit(b) {
+            try { navigator.sendBeacon('/hit?b=' + b); } catch (e) {}
+        }
+        
+        // Обратный отсчёт 10 секунд и редирект на auto_url
+        var left = 10;
+        var el = document.getElementById('c');
+        var timer = setInterval(function () {
+            left -= 1;
+            el.textContent = left;
+            if (left <= 0) {
+                clearInterval(timer);
+                location.href = {{ auto_url | tojson }};
+            }
+        }, 1000);
+        function stop() { clearInterval(timer); el.parentNode.remove(); }
+    </script>
+</body>
+</html>

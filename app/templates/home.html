@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>tttt.me — быстрый редирект на Telegram</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <main class="card">
+        <h1>tttt.me</h1>
+        <p>Вставьте ссылку t.me/... — откроем в Telegram или в браузере.</p>
+        <form id="f" onsubmit="return go(event)">
+            <input id="u" type="text" placeholder="t.me/durov или https://t.me/durov/123" autofocus>
+            <button type="submit">Перейти</button>
+        </form>
+    </main>
+    <script>
+        // Вырезаем всё до t.me/ или tttt.me/ и редиректим на наш путь
+        function go(e) {
+            e.preventDefault();
+            const raw = document.getElementById('u').value.trim();
+            const m = raw.match(/(?:t|tttt)\.me\/(.+)$/i);
+            const path = m ? m[1] : raw.replace(/^\/+/, '');
+            if (path) location.href = '/' + path;
+            return false;
+        }
+    </script>
+</body>
+</html>
