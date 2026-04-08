@@ -16,6 +16,8 @@
         {% if ad.fallback_text and ad.button_url %}
             <a class="btn secondary small"
                href="{{ ad.button_url }}"
+               target="_blank"
+               rel="noopener noreferrer"
                onclick="hit('ad')">{{ ad.fallback_text }}</a>
         {% endif %}
     {% else %}
