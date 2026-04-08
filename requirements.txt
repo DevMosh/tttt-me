@@ -3,6 +3,7 @@ uvicorn[standard]
 jinja2
 aiosqlite
 cachetools
+python-multipart
 pytest
 pytest-asyncio
 httpx

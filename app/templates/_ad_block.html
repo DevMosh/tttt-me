@@ -1,0 +1,27 @@
+{# Реюзабельный ad/tip-блок. Редактируется через /admin.
+   Ожидает в контексте переменную `ad` с полями:
+   label_kind, title, text, button_text, button_url, proxy_url, fallback_text. #}
+<aside class="ad {% if ad.label_kind == 'tip' %}tip{% endif %}">
+    <div class="ad-label {% if ad.label_kind == 'tip' %}tip{% endif %}">
+        {% if ad.label_kind == 'tip' %}✓ Совет{% else %}Реклама{% endif %}
+    </div>
+    <strong>{{ ad.title }}</strong>
+    <p>{{ ad.text }}</p>
+
+    {% if ad.proxy_url %}
+        {# Прямой прокси — основная кнопка, ссылка на бот — fallback #}
+        <a class="btn primary small"
+           href="{{ ad.proxy_url }}"
+           onclick="hit('ad')">{{ ad.button_text }}</a>
+        {% if ad.fallback_text and ad.button_url %}
+            <a class="btn secondary small"
+               href="{{ ad.button_url }}"
+               onclick="hit('ad')">{{ ad.fallback_text }}</a>
+        {% endif %}
+    {% else %}
+        {# Обычный случай — одна кнопка ведёт на бот/посадочную #}
+        <a class="btn primary small"
+           href="{{ ad.button_url }}"
+           onclick="hit('ad')">{{ ad.button_text }}</a>
+    {% endif %}
+</aside>

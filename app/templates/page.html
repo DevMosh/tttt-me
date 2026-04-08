@@ -3,15 +3,63 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ target.title }} — tttt.me</title>
+    <title>{{ target.title }} — {{ domain }}</title>
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
     <link rel="stylesheet" href="/static/style.css">
     {# No-JS fallback: авторедирект через 10 секунд #}
-    <meta http-equiv="refresh" content="10;url={{ auto_url }}">
+    <noscript>
+        <meta http-equiv="refresh" content="10;url={{ auto_url }}">
+    </noscript>
+
+    {# --- НАЧАЛО БЛОКА ПРЕДПРОСМОТРА (Open Graph) --- #}
+    {% set preview_desc = "You can contact " ~ target.title ~ " right away." %}
+    {% if target.kind == 'invite' %}
+        {% set preview_desc = "Join this chat/channel in Telegram." %}
+    {% elif target.kind == 'post' or target.kind == 'private_post' %}
+        {% set preview_desc = "Read the publication in Telegram." %}
+    {% elif target.kind == 'preview' %}
+        {% set preview_desc = "View " ~ target.title ~ " in Telegram." %}
+    {% endif %}
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Telegram"> {# Имитируем, что ссылка от самого Telegram #}
+    <meta property="og:title" content="{{ target.title }}"> {# Оставляем только юзернейм/название #}
+    <meta property="og:description" content="{{ preview_desc }}">
+    <meta property="og:url" content="{{ target.web_url }}">
+
+    <meta property="og:image" content="https://telegram.org/img/t_logo.png">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ target.title }}">
+    <meta name="twitter:description" content="{{ preview_desc }}">
+    <meta name="twitter:image" content="https://telegram.org/img/t_logo.png">
+    {# --- КОНЕЦ БЛОКА ПРЕДПРОСМОТРА --- #}
 </head>
 <body>
     <main class="card">
+        {# Если нашли og:image — показываем картинку, иначе букву #}
+        {% set letter = (target.title or "?")[0] | upper %}
+        {% if avatar_username %}
+            <div class="avatar">
+                <img src="/avatar/{{ avatar_username }}" alt=""
+                     onerror="var p=this.parentNode; p.removeChild(this); p.textContent='{{ letter }}';">
+            </div>
+        {% else %}
+            <div class="avatar">{{ letter }}</div>
+        {% endif %}
+
+
         <h1>{{ target.title }}</h1>
-        <p class="kind">{{ target.kind }}</p>
+        <p class="kind">
+            {% if target.kind == "user" %}Telegram user / channel
+            {% elif target.kind == "post" %}Telegram post
+            {% elif target.kind == "invite" %}Chat invite
+            {% elif target.kind == "private_post" %}Private post
+            {% elif target.kind == "preview" %}Channel preview
+            {% elif target.kind == "share" %}Share via Telegram
+            {% else %}Telegram link
+            {% endif %}
+        </p>
 
         {% if target.tg_url %}
             <a class="btn primary" href="{{ target.tg_url }}"
@@ -24,26 +72,26 @@
             Автооткрытие через <span id="c">10</span> с
             <a href="#" onclick="stop();return false">отменить</a>
         </p>
+        <div class="progress"><div id="bar" class="progress-bar"></div></div>
 
         <hr>
-        <aside class="ad">
-            <strong>@ProxyCatalog_bot</strong>
-            <p>Telegram не открывается? Рабочий прокси за 5 секунд.</p>
-            <a class="btn primary small"
-               href="https://t.me/ProxyCatalog_bot?start=ttttme"
-               onclick="hit('ad')">Включить прокси</a>
-        </aside>
+        {% include "_ad_block.html" %}
+
     </main>
 
     <script>
-                // Отправляем счётчик клика на /hit. sendBeacon не блокирует навигацию.
+        // Отправляем счётчик клика на /hit. sendBeacon не блокирует навигацию.
         function hit(b) {
             try { navigator.sendBeacon('/hit?b=' + b); } catch (e) {}
         }
-        
-        // Обратный отсчёт 10 секунд и редирект на auto_url
+
+        // Обратный отсчёт 10 секунд + прогресс-бар и редирект
         var left = 10;
         var el = document.getElementById('c');
+        var bar = document.getElementById('bar');
+        // Запускаем CSS-анимацию прогресс-бара в следующем кадре
+        requestAnimationFrame(function () { bar.classList.add('run'); });
+
         var timer = setInterval(function () {
             left -= 1;
             el.textContent = left;
@@ -52,7 +100,15 @@
                 location.href = {{ auto_url | tojson }};
             }
         }, 1000);
-        function stop() { clearInterval(timer); el.parentNode.remove(); }
+
+        function stop() {
+            clearInterval(timer);
+            // Убираем весь блок обратного отсчёта
+            var c = document.querySelector('.countdown');
+            var p = document.querySelector('.progress');
+            if (c) c.remove();
+            if (p) p.remove();
+        }
     </script>
 </body>
 </html>

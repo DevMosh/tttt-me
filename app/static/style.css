@@ -1,0 +1,376 @@
+/* Палитра и базовые переменные в стиле Telegram Web/Desktop */
+:root {
+    --bg: #f4f4f5;
+    --card: #ffffff;
+    --text: #000000;
+    --text-secondary: #707579;
+    --accent: #3390ec;
+    --accent-hover: #1e7ad6;
+    --divider: #e7e7e7;
+    --shadow: 0 2px 16px rgba(0, 0, 0, .08);
+}
+
+/* Автоматическая тёмная тема по системной настройке */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #0f0f0f;
+        --card: #212121;
+        --text: #ffffff;
+        --text-secondary: #aaaaaa;
+        --divider: #2c2c2c;
+        --shadow: 0 2px 16px rgba(0, 0, 0, .4);
+    }
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.4;
+    min-height: 100vh;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+/* Основная карточка по центру экрана */
+.card {
+    background: var(--card);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 28px 24px 20px;
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+}
+
+/* На мобильных убираем тень и расширяем на весь экран */
+@media (max-width: 480px) {
+    body { padding: 0; }
+    .card {
+        border-radius: 0;
+        box-shadow: none;
+        max-width: none;
+        min-height: 100vh;
+        padding-top: 40px;
+    }
+}
+
+/* Круглый аватар-плейсхолдер 80px с инициалом */
+.avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 32px;
+    font-weight: 500;
+    /* Градиент в духе аватаров Telegram (синий) */
+    background: linear-gradient(135deg, #5eb5f7 0%, #3390ec 100%);
+}
+
+/* Заголовок — имя канала/бота */
+.card h1 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 4px;
+    color: var(--text);
+    word-break: break-word;
+}
+
+.card .kind {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin: 0 0 24px;
+}
+
+/* Кнопки */
+.btn {
+    display: block;
+    width: 100%;
+    padding: 0 16px;
+    height: 48px;
+    line-height: 48px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+    transition: background .15s, color .15s;
+    border: none;
+    cursor: pointer;
+}
+
+.btn.primary {
+    background: var(--accent);
+    color: #ffffff;
+}
+
+.btn.primary:hover {
+    background: var(--accent-hover);
+}
+
+.btn.secondary {
+    background: transparent;
+    color: var(--accent);
+}
+
+.btn.secondary:hover {
+    background: rgba(51, 144, 236, .08);
+}
+
+.btn.small {
+    height: 36px;
+    line-height: 36px;
+    font-size: 14px;
+}
+
+/* Блок обратного отсчёта */
+.countdown {
+    margin: 16px 0 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.countdown a {
+    color: var(--accent);
+    text-decoration: none;
+    margin-left: 4px;
+}
+
+/* Прогресс-бар, заполняется за 10 секунд CSS-транзишном */
+.progress {
+    width: 100%;
+    height: 2px;
+    background: var(--divider);
+    border-radius: 1px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0;
+    background: var(--accent);
+    transition: width 10s linear;
+}
+
+.progress-bar.run {
+    width: 100%;
+}
+
+/* Разделитель и рекламный блок в стиле "sponsored message" Telegram */
+hr {
+    border: none;
+    border-top: 1px solid var(--divider);
+    margin: 20px 0 16px;
+}
+
+.ad {
+    text-align: left;
+    padding: 12px;
+    border-radius: 10px;
+    background: rgba(51, 144, 236, .06);
+}
+
+.ad .ad-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    margin-bottom: 4px;
+}
+
+.ad strong {
+    display: block;
+    color: var(--accent);
+    font-size: 15px;
+    margin-bottom: 2px;
+}
+
+.ad p {
+    margin: 0 0 10px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+/* Форма на домашней странице */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+input[type=text] {
+    height: 48px;
+    padding: 0 16px;
+    border-radius: 8px;
+    border: 1px solid var(--divider);
+    background: var(--card);
+    color: var(--text);
+    font-size: 15px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color .15s;
+}
+
+input[type=text]:focus {
+    border-color: var(--accent);
+}
+
+
+/* Если есть реальная аватарка — растягиваем картинку на весь круг */
+.avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+
+/* -------- Админская форма -------- */
+.admin-card {
+    max-width: 560px;
+    text-align: left;
+}
+
+.admin-card h1 {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.saved-flash {
+    text-align: center;
+    color: #44a340;
+    font-size: 13px;
+    margin: 0 0 14px;
+}
+
+.field {
+    margin-bottom: 14px;
+}
+
+.field label {
+    display: block;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.field .hint {
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+.field input[type=text],
+.field textarea,
+.field select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--divider);
+    background: var(--card);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: border-color .15s;
+}
+
+.field input[type=text]:focus,
+.field textarea:focus,
+.field select:focus {
+    border-color: var(--accent);
+}
+
+.field textarea {
+    min-height: 72px;
+    resize: vertical;
+}
+
+/* -------- Блок статистики в админке -------- */
+.admin-card h2 {
+    text-align: center;
+    margin-bottom: 16px;
+    font-size: 18px;
+    color: var(--text);
+}
+
+.stats-grid {
+    display: grid;
+    /* Плитки будут автоматически переноситься, минимальная ширина 120px */
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px;
+}
+
+.stat-item {
+    background: var(--bg);
+    border: 1px solid var(--divider);
+    border-radius: 8px;
+    padding: 16px 12px;
+    text-align: center;
+}
+
+.stat-key {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+}
+
+.stat-value {
+    display: block;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--accent);
+}
+
+
+/* -------- Tip-вариант ad-блока: зелёная плашка для доверия -------- */
+.ad.tip {
+    background: rgba(68, 163, 64, .08);
+}
+
+.ad.tip .ad-label {
+    color: #44a340;
+}
+
+.ad.tip strong {
+    color: #44a340;
+}
+
+/* Зелёная primary-кнопка внутри tip-блока */
+.ad.tip .btn.primary {
+    background: #44a340;
+}
+
+.ad.tip .btn.primary:hover {
+    background: #3a8c36;
+}
+
+.ad.tip .btn.secondary {
+    color: #44a340;
+}
+
+.ad.tip .btn.secondary:hover {
+    background: rgba(68, 163, 64, .1);
+}
+

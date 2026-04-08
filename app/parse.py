@@ -2,6 +2,8 @@
 from dataclasses import dataclass
 from urllib.parse import quote, urlencode
 
+from app.config import DOMAIN
+
 
 @dataclass(frozen=True)
 class Target:
@@ -18,7 +20,7 @@ def parse(path: str, query: str = "") -> Target:
     """
     path = path.lstrip("/")
     if not path:
-        return Target(None, "https://t.me/", "tttt.me", "home")
+        return Target(None, "https://t.me/", DOMAIN, "home")
 
     segments = path.split("/")
     first = segments[0]
