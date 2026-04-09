@@ -53,6 +53,11 @@
                    placeholder="Не работает? Возьми свежий в боте">
         </div>
 
+        <div class="field">
+            <label>Текст выпадающей инструкции <span class="hint">(Поддерживает HTML-теги: &lt;b&gt;, &lt;br&gt;, &lt;code&gt; и т.д.)</span></label>
+            <textarea name="instruction_html" style="min-height: 120px;" placeholder="<b>Шаг 1:</b> Скопируйте эту ссылку...<br><br><code>tg://proxy...</code>">{{ ad.instruction_html }}</textarea>
+        </div>
+
         <button type="submit" class="btn primary">Сохранить</button>
     </form>
 

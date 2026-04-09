@@ -71,6 +71,7 @@ async def admin_save(
     button_url: str = Form(...),
     proxy_url: str = Form(""),
     fallback_text: str = Form(""),
+    instruction_html: str = Form(""),  # <--- Добавили новое поле
     _: None = Depends(require_admin),
 ) -> RedirectResponse:
     """Сохраняет новый контент ad-блока и редиректит на GET."""
@@ -96,6 +97,6 @@ async def admin_save(
         "button_url": button_url.strip(),
         "proxy_url": proxy_url.strip(),
         "fallback_text": fallback_text.strip(),
+        "instruction_html": instruction_html.strip(),  # <--- Сохраняем его
     })
-    # Post-Redirect-Get: избегаем повторного POST при F5
     return RedirectResponse(url="/admin?saved=1", status_code=303)

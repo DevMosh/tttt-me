@@ -374,3 +374,97 @@ input[type=text]:focus {
     background: rgba(68, 163, 64, .1);
 }
 
+
+/* =========================================
+   Кнопка-ссылка для инструкции (fallback)
+   ========================================= */
+.fallback-btn {
+    display: block;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none !important; /* Жестко убираем подчеркивание */
+    margin-top: 12px;
+    padding: 10px 16px; /* Добавляем внутренние отступы, чтобы кнопка стала объемной */
+    border-radius: 8px; /* Красивые закругленные края */
+    transition: background 0.15s, color 0.15s; /* Плавная анимация наведения */
+}
+
+/* Цвета для зеленого блока (Совет) */
+.ad.tip .fallback-btn {
+    color: #44a340;
+    background: transparent;
+}
+
+.ad.tip .fallback-btn:hover {
+    background: rgba(68, 163, 64, 0.1); /* Нежный зеленый фон при наведении */
+}
+
+/* Цвета для серого блока (Реклама) */
+.ad:not(.tip) .fallback-btn {
+    color: var(--accent);
+    background: transparent;
+}
+
+.ad:not(.tip) .fallback-btn:hover {
+    background: rgba(51, 144, 236, 0.08); /* Нежный синий фон при наведении */
+}
+
+
+/* =========================================
+   Выпадающий блок с инструкцией
+   ========================================= */
+.instruction-box {
+    display: none; /* Скрыт по умолчанию */
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px dashed rgba(68, 163, 64, 0.3);
+
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text);
+    text-align: left;
+
+    /* ЧИНИМ ВЫХОД ЗА РАМКИ */
+    overflow-wrap: break-word; /* Принудительно переносит длинные ссылки и слова */
+    word-break: break-word;
+
+    /* ЧИНИМ МОБИЛЬНЫЙ СКРОЛЛ */
+    max-height: 40vh; /* Блок займет максимум 40% высоты экрана */
+    overflow-y: auto; /* Включаем прокрутку ВНУТРИ самого блока */
+    padding-right: 8px; /* Отступ справа, чтобы текст не прилипал к ползунку прокрутки */
+}
+
+/* Красивый кастомный ползунок прокрутки для инструкции (для Chrome/Safari/Edge) */
+.instruction-box::-webkit-scrollbar {
+    width: 5px;
+}
+.instruction-box::-webkit-scrollbar-thumb {
+    background: rgba(112, 117, 121, 0.3);
+    border-radius: 4px;
+}
+.instruction-box::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Стилизация тегов внутри инструкции */
+.instruction-box b, .instruction-box strong {
+    color: var(--text);
+}
+
+.instruction-box code {
+    display: block;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 8px 10px;
+    border-radius: 6px;
+    margin: 8px 0;
+    word-break: break-all; /* Ссылки на прокси будут переноситься на новую строку */
+    font-family: monospace;
+    font-size: 12px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .instruction-box code {
+        background: rgba(255, 255, 255, 0.1);
+    }
+}

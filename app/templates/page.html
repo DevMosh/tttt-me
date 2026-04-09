@@ -109,6 +109,22 @@
             if (c) c.remove();
             if (p) p.remove();
         }
+
+        function toggleInst(e) {
+            e.preventDefault(); // Запасная блокировка перехода
+
+            var box = document.getElementById('inst-box');
+            if (!box) {
+                console.log("Блок с инструкцией не найден в HTML!");
+                return;
+            }
+
+            if (box.style.display === 'block') {
+                box.style.display = 'none';
+            } else {
+                box.style.display = 'block';
+            }
+        }
     </script>
 </body>
 </html>
